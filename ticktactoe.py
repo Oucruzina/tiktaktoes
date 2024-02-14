@@ -83,40 +83,51 @@ while game_type != '1' and game_type != '2':
         print('That wasnt "1" or "2", idiot.\n')
 if game_type == '2':
     print('2 player game:')
+    user_in = -1
+    moves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     fun_graph()
     for i in range(9):
-        user_in = -1
         if detect_win(game_state) != None:
             print(detect_win(game_state))
-            fun_graph()
             break
         if i % 2 == 0:
-            while user_in < 0 or user_in > 8:
+            while moves.count(user_in) == 0:
                 user_in = int(input("p1, enter value:"))
                 if user_in < 0 or user_in > 8:
-                    print('Thats not a number 0-8, dummy')
+                    print("That's not a number 0-8, dummy.\n")
+                if moves.count(user_in) == 0:
+                    print("That's not an available move, dumb dumb bubble gum\n.")
             game_state[user_in] = 'X'
             fun_graph()
         else:
-            while user_in < 0 or user_in > 8:
+            while moves.count(user_in) == 0:
                 user_in = int(input("p2, enter value:"))
                 if user_in < 0 or user_in > 8:
-                    print('Thats not a number 0-8, dummy')
+                    print("That's not a number 0-8, dummy.\n")
+                if moves.count(user_in) == 0:
+                    print("That's not an available move, dumb dumb bubble gum.\n")
             game_state[user_in] = 'O'
             fun_graph()
+        moves.remove(user_in)
     else:
-        print('Tie')
+        if detect_win(game_state) != None:
+            print(detect_win(game_state))
+        else:
+            print('Tie')
 elif game_type == '1':
+    moves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     x = '0'
     ai_diff = 0
     print('\n1 player game:')
     while ai_diff != 'very easy' and ai_diff != 'easy' and ai_diff != 'hard' and ai_diff != 'very hard':
+        #asks user for difficulty
         print('Select ai difficulty:')
         print('very easy        easy\nvery hard        hard')
         ai_diff = input()
         if ai_diff != 'very easy' and ai_diff != 'easy' and ai_diff != 'hard' and ai_diff != 'very hard':
-            print("That wasn't an option, dummy\n")
+            print("That wasn't an option, stupid.\n")
     while x != '1' and x != '2':
+        #asks user for move order
         print('Would you like to go first or second?\n')
         x = input('Enter number, 1 or 2:')
         if x == '1':
@@ -131,19 +142,28 @@ elif game_type == '1':
         else:
             print('That wasnt "1" or "2", idiot.\n')
     for i in range(9):
+        #play begins 
         user_in = -1
         if detect_win(game_state) != None:
+            #win detection
             print(detect_win(game_state))
             fun_graph()
             break
         if i % 2 == evenness:
-            while user_in < 0 or user_in > 8:
-                user_in = int(input("player, enter value:"))
+            #player turn
+            while moves.count(user_in) == 0:
+                user_in = int(input("p1, enter value:"))
                 if user_in < 0 or user_in > 8:
-                        print('Thats not a number 0-8, dummy')
+                    print("That's not a number 0-8, dummy.\n")
+                if moves.count(user_in) == 0:
+                    print("That's not an available move, dumb dumb bubble gum\n.")
             game_state[user_in] = user_char
+            moves.remove(user_in)
         else:
-            game_state[ai_player()] = ai_char
+            #ai turn
+            x = ai_player()
+            game_state[x] = ai_char
+            moves.remove(x)
             fun_graph()
     else:
         print('Tie')
